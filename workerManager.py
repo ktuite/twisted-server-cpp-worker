@@ -18,15 +18,24 @@ class WorkerProtocol(basic.LineReceiver):
         print "[ATTENTION] connection lost"
       
     def sendCommand(self, cmd, job):
-        print "Sending this command [%s] to worker" % (cmd)
-        self.queue.insert(0, job)
-        self.sendLine(cmd)
-        
+        self.enqueue(cmd, job)
+
+    def enqueue(self, cmd, job):
+        print "enqueuing command [%s]\n" % cmd
+        if not self.queue:
+            self.sendLine(cmd)
+
+        self.queue.insert(0, (cmd, job) )
+
     def lineReceived(self, response_line):
         print "Line received:", response_line
         if len(self.queue) > 0:
-            job = self.queue.pop()
+            _, job = self.queue.pop()
             job.callback(response_line)
+            if self.queue:
+                cmd, job = self.queue[-1]
+                print "dequeuing command [%s]"
+                self.sendLine(cmd)
         
 class WorkerManager(object):
     def __init__(self, reactor):

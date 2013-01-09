@@ -74,29 +74,12 @@ void RunWorkerWorker() {
 
 
     bzero(buffer,BUFFER_SIZE);
-    
-    /*
-    sprintf(buffer, "bonjour! i am the client!\r\n");
-    n = write(sockfd,buffer,strlen(buffer));
-    if (n < 0)
-         error("[Worker] ERROR writing to socket");
-    bzero(buffer,BUFFER_SIZE);
-    n = read(sockfd,buffer,BUFFER_SIZE-1);
-    if (n < 0)
-        error("[Worker] ERROR reading from socket");
-        
-    printf("%s\n",buffer);
-
-    if (strncmp(buffer, "Denied", strlen("Denied")) == 0)
-        exit(0);
-
-    bzero(buffer,BUFFER_SIZE);
-    */
 
     bool shutdown = false;
     
     while(read(sockfd,buffer,BUFFER_SIZE-1) && !shutdown){
         shutdown = ProcessReceivedMessage(buffer, BUFFER_SIZE-1, sockfd);
+        bzero(buffer,BUFFER_SIZE);
     }
 
     printf("[Worker]  Shutting down...\n");
