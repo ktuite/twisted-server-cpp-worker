@@ -43,12 +43,20 @@ class LaunchResource(Resource):
             # only one 'word' can be in the command. 
             # everything else gets split up and put in the args array
             command = "pwd"
-            args = [] 
+            args = []
+
+            # i can't think of a better example that will definitely run... but here's a beefier hypothetical example
+            # to run the command: ./myProg input.txt output.txt --num_cats 5
+            # it would look like:
+            # command = "./myProg"
+            # args = ["input.txt", "output.txt", "--num_cats", "5"]
+            # or maybe this would also work
+            # args = ["input.txt", "output.txt", "--num_cats 5"]
         
             # run another command with getProcessOutput [to capture the stdout output]
             # or with getProcessValue [to just capture the exit code of the command]
-            out = yield utils.getProcessOutput("pwd", [])
-            val = yield utils.getProcessValue("pwd", [])
+            out = yield utils.getProcessOutput(command, args)
+            val = yield utils.getProcessValue(command, args)
 
             # printing is the same as logging
             print "getProcessOutput:", out
