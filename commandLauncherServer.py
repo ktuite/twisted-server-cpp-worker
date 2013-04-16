@@ -4,6 +4,10 @@ from twisted.python import log
 from twisted.internet import defer, utils
 import random
 
+## How To RUN ME! 
+# python commandLauncherServer.py
+# and then visit http://localhost:8080/launch
+
 ###################################
 #### Root and utility resources ###
 ###################################
